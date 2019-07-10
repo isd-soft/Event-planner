@@ -20,7 +20,7 @@ public class User {
 
     private String firstName;
 
-    private String secondeName;
+    private String secondName;
 
     private String email;
 
@@ -47,11 +47,11 @@ public class User {
     }
 
     public String getSecondeName() {
-        return secondeName;
+        return secondName;
     }
 
-    public void setSecondeName(String secondeName) {
-        this.secondeName = secondeName;
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
     }
 
     public String getEmail() {

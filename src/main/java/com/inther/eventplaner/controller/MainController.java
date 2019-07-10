@@ -31,7 +31,7 @@ public class MainController {
         User user = new User();
 
         user.setFirstName(firstName);
-        user.setSecondeName(secondName);
+        user.setSecondName(secondName);
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
         user.setPassword(password);
