@@ -3,12 +3,10 @@ package com.inther.eventplaner.domain;
 
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-import javax.persistence.Id;
-
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @EnableAspectJAutoProxy
 @Entity
@@ -20,7 +18,7 @@ public class User {
 
     private String firstName;
 
-    private String secondeName;
+    private String secondName;
 
     private String email;
 
@@ -46,12 +44,12 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String getSecondeName() {
-        return secondeName;
+    public String getSecondName() {
+        return secondName;
     }
 
-    public void setSecondeName(String secondeName) {
-        this.secondeName = secondeName;
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
     }
 
     public String getEmail() {

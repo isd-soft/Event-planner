@@ -4,14 +4,15 @@ package com.inther.eventplaner.controller;
 import com.inther.eventplaner.domain.User;
 import com.inther.eventplaner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/demo")
 public class MainController {
-    @GetMapping("/greeting")
+    @GetMapping("/")
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
         model.addAttribute("name", name);
         return "greeting "+name;
@@ -31,7 +32,7 @@ public class MainController {
         User user = new User();
 
         user.setFirstName(firstName);
-        user.setSecondeName(secondName);
+        user.setSecondName(secondName);
         user.setEmail(email);
         user.setPhoneNumber(phoneNumber);
         user.setPassword(password);
