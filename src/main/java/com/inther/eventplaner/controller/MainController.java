@@ -4,6 +4,7 @@ package com.inther.eventplaner.controller;
 import com.inther.eventplaner.domain.User;
 import com.inther.eventplaner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,15 +23,22 @@ public class MainController {
 
     @GetMapping(path="/add") // Map ONLY GET Requests
     public @ResponseBody
-    String addNewUser (@RequestParam String name
-            , @RequestParam String email) {
+    String addNewUser (@RequestParam String firstName, @RequestParam String secondName,
+                       @RequestParam String email, @RequestParam String phoneNumber, @RequestParam String password,@RequestParam String category ) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
 
-        User n = new User();
-        n.setName(name);
-        n.setEmail(email);
-        userRepository.save(n);
+        User user = new User();
+
+        user.setFirstName(firstName);
+        user.setSecondeName(secondName);
+        user.setEmail(email);
+        user.setPhoneNumber(phoneNumber);
+        user.setPassword(password);
+        user.setCategory(category);
+
+
+        userRepository.save(user);
         return "Saved";
     }
 
