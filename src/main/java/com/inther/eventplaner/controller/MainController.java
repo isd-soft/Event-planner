@@ -1,7 +1,7 @@
 package com.inther.eventplaner.controller;
 
 
-import com.inther.eventplaner.models.User;
+import com.inther.eventplaner.domain.User;
 import com.inther.eventplaner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
