@@ -62,7 +62,7 @@ public class GreetingController {
         return user;
     }
 
-    @PostMapping(path="/authenticate")
+    /*@PostMapping(path="/authenticate")
     public String authenticationMeth(@RequestParam String username,@RequestParam String password) {
         // This returns a JSON or XML with the users
 
@@ -75,7 +75,7 @@ public class GreetingController {
 
       };
         return "pass";
-    }
+    }*/
 
 
 }
