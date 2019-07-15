@@ -25,13 +25,13 @@ public class GreetingController {
 ////        model.addAttribute("name", name);
 //        return "redirect:/login" ;
 //    }
-
-    @GetMapping("/login")
-    public String greeting(@RequestParam String username
-            , @RequestParam String password, Model model) {
-//        model.addAttribute("name", name);
-        return "greeting" +password;
-    }
+//
+//    @GetMapping("/login")
+//    public String greeting(@RequestParam String username
+//            , @RequestParam String password, Model model) {
+////        model.addAttribute("name", name);
+//        return "greeting" +password;
+//    }
 
 
     @PostMapping(path="/add") // Map ONLY GET Requests
