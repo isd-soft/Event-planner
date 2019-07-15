@@ -4,7 +4,11 @@ import com.inther.eventplaner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -21,19 +25,15 @@ public class GreetingController {
         return "greeting" ;
     }
 
+
+
 //    @GetMapping("/login")
-//    public String getMap() {
-////        model.addAttribute("name", name);
-//        return "redirect:/login" ;
-//    }
-//
-    @GetMapping("/login")
-//    @PostMapping("/login")
+    @PostMapping("/login")
 //@RequestMapping(value = "/login", method = RequestMethod.POST)
     public String greeting(@RequestParam String username
             , @RequestParam String password, Model model) {
 //        model.addAttribute("name", name);
-        return "password: " +password;
+        return password;
     }
 
 

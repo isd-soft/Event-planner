@@ -2,6 +2,7 @@ package com.inther.eventplaner.domain;
 
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User  {
 
     public User() {
 
