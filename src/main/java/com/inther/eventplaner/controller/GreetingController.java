@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 
 @RestController
@@ -26,12 +27,14 @@ public class GreetingController {
 //        return "redirect:/login" ;
 //    }
 //
-//    @GetMapping("/login")
-//    public String greeting(@RequestParam String username
-//            , @RequestParam String password, Model model) {
-////        model.addAttribute("name", name);
-//        return "greeting" +password;
-//    }
+    @GetMapping("/login")
+//    @PostMapping("/login")
+//@RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String greeting(@RequestParam String username
+            , @RequestParam String password, Model model) {
+//        model.addAttribute("name", name);
+        return "password: " +password;
+    }
 
 
     @PostMapping(path="/add") // Map ONLY GET Requests
