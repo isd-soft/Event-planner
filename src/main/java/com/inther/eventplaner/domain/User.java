@@ -1,9 +1,5 @@
 package com.inther.eventplaner.domain;
 
-
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +11,11 @@ import java.util.Set;
 public class User  {
 
     public User() {
+    }
 
+    public User(String username, String password){
+        this.username=username;
+        this.password=password;
     }
 
     @Id
