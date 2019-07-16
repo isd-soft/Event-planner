@@ -25,7 +25,7 @@ public class GreetingController {
     }
 
 
-    @PostMapping(path = "/add")
+    @PostMapping(path = "/signup")
     public  String addNewUser(@RequestParam String username
             , @RequestParam String password, Model model) {
         // @ResponseBody means the returned String is the response, not a view name
