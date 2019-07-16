@@ -20,10 +20,6 @@ public class User  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//
-//    @Id
-//    @GeneratedValue(generator="system-uuid")
-//    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private int id;
 
     private String username;
