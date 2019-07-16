@@ -1,6 +1,5 @@
 package com.inther.eventplaner.domain;
 
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,29 +11,18 @@ import java.util.Set;
 public class User  {
 
     public User() {
+    }
 
+    public User(String username, String password){
+        this.username=username;
+        this.password=password;
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "firstname", nullable = false)
-    private String firstname;
-    @Column(name = "secondname", nullable = false)
-    private String secondname;
-
-    @Column(name = "username", nullable = false)
     private String username;
-
-    @Column(name = "email", nullable = false)
-    private String email;
-
-    @Column(name = "phonenuber", nullable = true)
-    private String phonenumber;
-    @Column(name = "photo", nullable = true)
-    private String photo;
-    @Column(name = "password", nullable = false)
     private String password;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -51,55 +39,10 @@ public class User  {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getSecondname() {
-        return secondname;
-    }
-
-    public void setSecondname(String secondname) {
-        this.secondname = secondname;
-    }
-
     public String getUsername() {
         return username;
     }
 
-
-
-
-
-
-
-    public String getPhonenumber() {
-        return phonenumber;
-    }
-
-    public void setPhonenumber(String phonenumber) {
-        this.phonenumber = phonenumber;
-    }
-
-    public String getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
     public void setUsername(String username) {
         this.username = username;
     }
