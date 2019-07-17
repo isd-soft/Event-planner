@@ -3,11 +3,9 @@ package com.inther.eventplaner.controller;
 import com.inther.eventplaner.domain.User;
 import com.inther.eventplaner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 
 @RestController
@@ -16,6 +14,15 @@ public class GreetingController {
     @Autowired
     private UserRepository userRepository;
 
+
+    @GetMapping("/greeting")
+    public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
+        model.addAttribute("name", name);
+        return "greeting";
+    }
+
+
+    //    @GetMapping("/login")
     @PostMapping("/login")
 
     public String greeting(@RequestParam String username
@@ -26,16 +33,17 @@ public class GreetingController {
 
 
     @PostMapping(path = "/signup")
-    public  String addNewUser(@RequestParam String username
-            , @RequestParam String password, Model model) {
-        // @ResponseBody means the returned String is the response, not a view name
-        // @RequestParam means it is a parameter from the GET or POST request
+    public   String addNewUser( @RequestBody User u) {
 
-        User n = new User();
-        n.setUsername(username);
-        n.setPassword(password);
-        userRepository.save(n);
-        return "Saved user is " + n.getUsername() + " " + n.getPassword();
+if (userRepository.findByEmail(u.getEmail())!=null){
+    return "user exists";
+
+
+}else {
+        userRepository.save(u);
+        String showUser= userRepository.findByEmail(u.getEmail()).getEmail();
+        return  "User email is: "+ showUser;
+}
     }
 
     @GetMapping(path = "/all")
@@ -48,17 +56,17 @@ public class GreetingController {
         return user;
     }
 
-    @PostMapping(path = "/authenticate")
-    public String authenticationMeth(@RequestParam String username, @RequestParam String password) {
+    @PostMapping(path = "/signin")
+    public String authenticationMeth(@RequestBody User u) {
         // This returns a JSON or XML with the users
 
-        if (userRepository.findByUsername(username).getUsername().equals(username)
-               && userRepository.findByUsername(username).getPassword().equals(password) ) {
+        if (userRepository.findByUsername(u.getUsername()).getUsername().equals(u.getUsername())
+                && userRepository.findByUsername(u.getUsername()).getPassword().equals(u.getPassword())) {
 
-return "is valid. User name is:"+userRepository.findByUsername(username).getUsername()+" .Password is:"
-        +userRepository.findByUsername(username).getPassword();
+            return "is valid. User name is:" + userRepository.findByUsername(u.getUsername()).getUsername() + " .Password is:"
+                    + userRepository.findByUsername(u.getUsername()).getPassword();
 
-        }else{
+        } else {
             return "no such user name";
 
         }
@@ -66,8 +74,10 @@ return "is valid. User name is:"+userRepository.findByUsername(username).getUser
 
     }
 
-
 }
+
+
+
 
 
 
