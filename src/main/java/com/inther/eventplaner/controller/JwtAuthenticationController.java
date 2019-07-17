@@ -4,8 +4,11 @@ import com.inther.eventplaner.config.JwtTokenUtil;
 import com.inther.eventplaner.domain.User;
 import com.inther.eventplaner.model.JwtRequest;
 import com.inther.eventplaner.model.JwtResponse;
+import com.inther.eventplaner.model.UserDTO;
+import com.inther.eventplaner.repository.UserRepository;
 import com.inther.eventplaner.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 public class JwtAuthenticationController {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -45,10 +51,13 @@ public class JwtAuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-   /* @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResponseEntity<?> saveUser(@RequestBody User user) throws Exception {
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
+        if ((userRepository.findByEmail(user.getEmail()))!=null) {
+            return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+        }
         return ResponseEntity.ok(userDetailsService.save(user));
-    }*/
+    }
 
     private void authenticate(String username, String password) throws Exception {
         try {

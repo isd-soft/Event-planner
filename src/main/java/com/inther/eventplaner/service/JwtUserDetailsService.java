@@ -1,15 +1,17 @@
 package com.inther.eventplaner.service;
 
+import java.util.ArrayList;
+
+import com.inther.eventplaner.model.UserDAO;
 import com.inther.eventplaner.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import com.inther.eventplaner.model.UserDTO;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
@@ -20,22 +22,9 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Autowired
     private PasswordEncoder bcryptEncoder;
 
-    /*@Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        // HARDCODE CHECK FOR USER
-        if ("javainuse".equals(username)) {
-            return new User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
-                    new ArrayList<>());
-        } else {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
-    }*/
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        com.inther.eventplaner.domain.User user = userRepository.findByUsername(username);
+        UserDAO user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -43,16 +32,15 @@ public class JwtUserDetailsService implements UserDetailsService {
                 new ArrayList<>());
     }
 
-    /*public UserRepository save(User user) {
-        User newUser = new User();
+    public UserDAO save(UserDTO user) {
+        UserDAO newUser = new UserDAO();
         newUser.setUsername(user.getUsername());
         newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-        userRepository.save(newUser);
-        return (UserRepository) userRepository.save(user);
-    }*/
-
-
-
-
-
+        newUser.setEmail(user.getEmail());
+        newUser.setFirstname(user.getFirstname());
+        newUser.setSecondname(user.getSecondname());
+        newUser.setPhoneNumber(user.getPhoneNumber());
+        newUser.setPhoto(user.getPhoto());
+        return userRepository.save(newUser);
+    }
 }
