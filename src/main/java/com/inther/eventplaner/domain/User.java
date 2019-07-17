@@ -1,9 +1,5 @@
 package com.inther.eventplaner.domain;
 
-
-import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,10 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User  {
-
-    public User() {
-    }
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,6 +16,7 @@ public class User  {
 
     @Column(name = "firstname", nullable = false)
     private String firstname;
+
     @Column(name = "secondname", nullable = false)
     private String secondname;
 
@@ -80,12 +74,6 @@ public class User  {
     public String getUsername() {
         return username;
     }
-
-
-
-
-
-
 
     public String getPhonenumber() {
         return phonenumber;
