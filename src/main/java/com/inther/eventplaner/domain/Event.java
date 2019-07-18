@@ -1,6 +1,8 @@
 package com.inther.eventplaner.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.inther.eventplaner.model.UserDAO;
+import lombok.Data;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -9,7 +11,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 
-
+@Data
 @Entity
 @Table(name = "events")
 public class Event {
@@ -36,86 +38,7 @@ public class Event {
 
     private float price;
     private String location;
-    private ArrayList<User> participants;
-    private ArrayList<User> organizators;
+    private ArrayList<UserDAO> participants;
+    private ArrayList<UserDAO> organizators;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Duration getDuration() {
-        return duration;
-    }
-
-    public void setDuration(Duration duration) {
-        this.duration = duration;
-    }
-
-    public float getPrice() {
-        return price;
-    }
-
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public ArrayList<User> getParticipants() {
-        return participants;
-    }
-
-    public void setParticipants(ArrayList<User> participants) {
-        this.participants = participants;
-    }
-
-    public ArrayList<User> getOrganizators() {
-        return organizators;
-    }
-
-    public void setOrganizators(ArrayList<User> organizators) {
-        this.organizators = organizators;
-    }
 }

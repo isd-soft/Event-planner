@@ -3,6 +3,7 @@ package com.inther.eventplaner.controller;
 import com.inther.eventplaner.config.JwtTokenUtil;
 import com.inther.eventplaner.model.JwtRequest;
 import com.inther.eventplaner.model.JwtResponse;
+import com.inther.eventplaner.model.UserDAO;
 import com.inther.eventplaner.model.UserDTO;
 import com.inther.eventplaner.repository.UserRepository;
 import com.inther.eventplaner.service.JwtUserDetailsService;
@@ -53,9 +54,10 @@ public class JwtAuthenticationController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
         if ((userRepository.findByEmail(user.getEmail()))!=null) {
-            return ResponseEntity.ok(HttpStatus.NO_CONTENT);
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(userDetailsService.save(user));
+        userDetailsService.save(user);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     private void authenticate(String username, String password) throws Exception {
