@@ -1,7 +1,6 @@
 package com.inther.eventplaner.controller;
 
 import com.inther.eventplaner.config.JwtTokenUtil;
-import com.inther.eventplaner.domain.User;
 import com.inther.eventplaner.model.JwtRequest;
 import com.inther.eventplaner.model.JwtResponse;
 import com.inther.eventplaner.model.UserDTO;
