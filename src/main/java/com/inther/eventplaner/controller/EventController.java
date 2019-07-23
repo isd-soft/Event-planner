@@ -13,6 +13,7 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 public class EventController {
 
     @Autowired

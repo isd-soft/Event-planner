@@ -3,7 +3,6 @@ package com.inther.eventplaner.controller;
 import com.inther.eventplaner.config.JwtTokenUtil;
 import com.inther.eventplaner.model.JwtRequest;
 import com.inther.eventplaner.model.JwtResponse;
-import com.inther.eventplaner.model.UserDAO;
 import com.inther.eventplaner.model.UserDTO;
 import com.inther.eventplaner.repository.UserRepository;
 import com.inther.eventplaner.service.JwtUserDetailsService;

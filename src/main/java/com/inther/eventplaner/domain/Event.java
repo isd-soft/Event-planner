@@ -39,6 +39,6 @@ public class Event {
     private float price;
     private String location;
     private ArrayList<UserDAO> participants;
-    private ArrayList<UserDAO> organizators;
+    private ArrayList<UserDAO> organizers;
 
 }
