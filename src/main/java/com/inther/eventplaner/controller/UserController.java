@@ -24,6 +24,8 @@ public class UserController {
     @PutMapping("/userinfo/{userId}")
     public UserDAO updateUserInfo(@PathVariable Integer userId, @Valid @RequestBody UserDAO userInfoRequest) {
         return userRepository.findById(userId).map(userInfo -> {
+            userInfo.setFirstname(userInfoRequest.getFirstname());
+            userInfo.setLastname(userInfoRequest.getLastname());
             userInfo.setPhoneNumber(userInfoRequest.getPhoneNumber());
             userInfo.setDescription(userInfoRequest.getDescription());
             userInfo.setGender(userInfoRequest.getGender());
