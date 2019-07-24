@@ -27,7 +27,7 @@ public class UserDAO {
 	private String firstname;
 
 	@Column
-	private String secondname;
+	private String lastname;
 
 	@Column
 	private String phoneNumber;
