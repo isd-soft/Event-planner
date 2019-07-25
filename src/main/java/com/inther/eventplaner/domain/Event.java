@@ -23,18 +23,16 @@ public class Event {
     @NotNull(message = "Title is required!")
     private String title;
 
-    @NotNull(message = "Description is required!")
     private String description;
 
-    @NotNull(message = "Event category should be specified")
     private String category;
 
-    @NotNull(message = "Introduce Date/Time of event start")
-    @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
-    private Date date;
+    @NotNull(message = "Introduce Start Date/Time of event start")
+    private Date startdate;
 
-    //@NotNull(message = "How long will be this event?")
-    private Duration duration;
+
+    @Column(nullable = true)
+    private Date enddate;
 
     private float price;
     private String location;

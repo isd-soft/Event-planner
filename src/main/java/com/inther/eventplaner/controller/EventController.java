@@ -40,7 +40,8 @@ public class EventController {
             event.setTitle(eventRequest.getTitle());
             event.setDescription(eventRequest.getDescription());
             event.setCategory(eventRequest.getCategory());
-            event.setDate(eventRequest.getDate());
+            event.setStartdate(eventRequest.getStartdate());
+            event.setEnddate(eventRequest.getEnddate());
             event.setPrice(eventRequest.getPrice());
             event.setLocation(eventRequest.getLocation());
             return eventRepository.save(event);
