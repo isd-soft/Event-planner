@@ -16,20 +16,20 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping("/userinfo/{userId}")
-    public Optional<UserDAO> getUserInfo(@PathVariable Integer userId) {
+    @GetMapping("/user/{userId}")
+    public Optional<UserDAO> getUser(@PathVariable Integer userId) {
         return userRepository.findById(userId);
     }
 
-    @PutMapping("/userinfo/{userId}")
-    public UserDAO updateUserInfo(@PathVariable Integer userId, @Valid @RequestBody UserDAO userInfoRequest) {
-        return userRepository.findById(userId).map(userInfo -> {
-            userInfo.setFirstname(userInfoRequest.getFirstname());
-            userInfo.setLastname(userInfoRequest.getLastname());
-            userInfo.setPhoneNumber(userInfoRequest.getPhoneNumber());
-            userInfo.setDescription(userInfoRequest.getDescription());
-            userInfo.setGender(userInfoRequest.getGender());
-            return userRepository.save(userInfo);
+    @PutMapping("/user/{userId}")
+    public UserDAO updateUser(@PathVariable Integer userId, @Valid @RequestBody UserDAO userRequest) {
+        return userRepository.findById(userId).map(user -> {
+            user.setFirstname(userRequest.getFirstname());
+            user.setLastname(userRequest.getLastname());
+            user.setPhoneNumber(userRequest.getPhoneNumber());
+            user.setDescription(userRequest.getDescription());
+            user.setGender(userRequest.getGender());
+            return userRepository.save(user);
         }).orElseThrow(() -> new ResourceNotFoundException("UserID " + userId + " not found"));
     }
 }

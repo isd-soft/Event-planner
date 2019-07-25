@@ -1,15 +1,13 @@
 package com.inther.eventplaner.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.inther.eventplaner.model.UserDAO;
 import lombok.Data;
-import org.springframework.lang.Nullable;
-
+import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 
 @Data
 @Entity
@@ -36,7 +34,21 @@ public class Event {
 
     private float price;
     private String location;
-    private ArrayList<UserDAO> participants;
-    private ArrayList<UserDAO> organizers;
+
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.ALL},
+            mappedBy = "events"
+    )
+    @JsonIgnore
+    @EqualsAndHashCode.Exclude
+    private Set<UserDAO> users = new HashSet<>();
+
+    @JsonIgnore
+    @Column
+    private int userId;
+
+//    private Collection<UserDAO> participants = new ArrayList<>();
+//    private ArrayList<UserDAO> organizers;
 
 }
