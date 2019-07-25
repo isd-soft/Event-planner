@@ -1,9 +1,12 @@
 package com.inther.eventplaner.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.inther.eventplaner.domain.Event;
 import com.inther.eventplaner.domain.Role;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -42,6 +45,27 @@ public class UserDAO {
 
 	@Column
 	private String gender;
+
+	public Set<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(Set<Event> events) {
+		this.events = events;
+	}
+
+	@ManyToMany(
+			fetch = FetchType.LAZY,
+			cascade = {CascadeType.ALL}
+	)
+	@JoinTable(
+			name = "user_event",
+			joinColumns = {@JoinColumn(name = "user_id")},
+			inverseJoinColumns = {@JoinColumn(name = "event_id")}
+	)
+	@JsonIgnore
+	@EqualsAndHashCode.Exclude
+	private Set<Event> events = new HashSet<>();
 
 	/*@ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
 	@CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
