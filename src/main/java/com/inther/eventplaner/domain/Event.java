@@ -44,7 +44,6 @@ public class Event {
     @EqualsAndHashCode.Exclude
     private Set<UserDAO> users = new HashSet<>();
 
-    @JsonIgnore
     @Column
     private int userId;
 
