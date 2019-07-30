@@ -1,10 +1,7 @@
 package com.inther.eventplaner.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.inther.eventplaner.model.UserDAO;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
@@ -28,27 +25,14 @@ public class Event {
     @NotNull(message = "Introduce Start Date/Time of event start")
     private Date startdate;
 
-
-    @Column(nullable = true)
     private Date enddate;
-
     private float price;
     private String location;
 
-    @ManyToMany(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.ALL},
-            mappedBy = "events"
-    )
     @JsonIgnore
-    @EqualsAndHashCode.Exclude
-    private Set<UserDAO> users = new HashSet<>();
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private Set<EventUser> participants  = new HashSet<>();
 
-    @JsonIgnore
-    @Column
     private int userId;
-
-//    private Collection<UserDAO> participants = new ArrayList<>();
-//    private ArrayList<UserDAO> organizers;
 
 }
