@@ -11,11 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -48,8 +44,18 @@ public class JwtAuthenticationController {
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public ResponseEntity<?> saveUser(@RequestBody UserDTO user) throws Exception {
-        if ((userRepository.findByEmail(user.getEmail()))!=null) {
-            return ResponseEntity.badRequest().build();
+        String errorMessage;
+        if ((userRepository.findByEmail(user.getEmail()))!=null ) {
+            errorMessage = "This e-mail is already registered!";
+            return ResponseEntity
+                    .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .body(errorMessage);
+        }
+        if ((userRepository.findByUsername(user.getUsername()))!=null) {
+            errorMessage = "This username exists! Please enter another one";
+            return ResponseEntity
+                    .status(HttpStatus.UNPROCESSABLE_ENTITY)
+                    .body(errorMessage);
         }
         userDetailsService.save(user);
         return ResponseEntity.ok(HttpStatus.CREATED);
