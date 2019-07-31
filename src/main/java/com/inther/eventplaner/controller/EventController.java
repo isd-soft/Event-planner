@@ -2,6 +2,7 @@ package com.inther.eventplaner.controller;
 
 import com.inther.eventplaner.domain.Event;
 import com.inther.eventplaner.exception.ResourceNotFoundException;
+import com.inther.eventplaner.model.UserDAO;
 import com.inther.eventplaner.repository.EventRepository;
 import com.inther.eventplaner.repository.UserRepository;
 import org.json.JSONException;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -48,6 +50,16 @@ public class EventController {
             eventRepository.updateParticipationInfo(currentUserId, eventId, answerString);
         }
     }
+
+    @GetMapping("/events/{eventId}/participants")
+    public List<UserDAO> getParticipationInfo(@PathVariable Integer eventId, @RequestBody String answer ) throws JSONException {
+
+        final JSONObject jsonObject = new JSONObject(answer);
+        String answerString = jsonObject.getString("answer");
+
+        return userRepository.getAllParticipantsInfoForEvent(eventId, answerString);
+    }
+
 
     @PostMapping("/events")
     public Event createEvent(@Valid @RequestBody Event event) {

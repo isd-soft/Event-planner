@@ -28,9 +28,8 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     void updateParticipationInfo(@Param("userId") Integer userId, @Param("eventId") Integer eventId, @Param("answer") String answer);
 
     @Transactional
-    @Query(value = "SELECT COUNT(user_id) FROM event_user WHERE event_id = :eventId AND user_id = :userId", nativeQuery = true)
+    @Query(value = "select count(user_id) from event_user where event_id = :eventId and user_id = :userId", nativeQuery = true)
     public int findRecordCount(@Param("eventId") Integer eventId, @Param("userId") Integer userId);
-
 
 
 }
