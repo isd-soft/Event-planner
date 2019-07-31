@@ -19,5 +19,14 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Modifying
     @Query(value = "insert into event_user (user_id, event_id, answer) values (:userId, :eventId, :answer)",
             nativeQuery = true)
-    void insertParticipant(@Param("userId") Integer userId, @Param("eventId") Integer eventId, @Param("answer") String answer);
+    void insertParticipationInfo(@Param("userId") Integer userId, @Param("eventId") Integer eventId, @Param("answer") String answer);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update event_user set answer = :answer where user_id = :userId and event_id = :eventId",
+            nativeQuery = true)
+    void updateParticipationInfo(@Param("userId") Integer userId, @Param("eventId") Integer eventId, @Param("answer") String answer);
+
+
+
 }
