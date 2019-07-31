@@ -7,15 +7,12 @@ import com.inther.eventplaner.repository.UserRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import java.sql.*;
 import java.util.Optional;
 
 @RestController
@@ -27,12 +24,6 @@ public class EventController {
 
     @Autowired
     private EventRepository eventRepository;
-
-    @Value("${spring.datasource.username}")
-    private String databaseUsername;
-
-    @Value("${spring.datasource.password}")
-    private String databasePassword;
 
     @GetMapping("/events")
     public Page<Event> getAllEvents(Pageable pageable) {
@@ -51,41 +42,11 @@ public class EventController {
         final JSONObject jsonObject = new JSONObject(answer);
         String answerString = jsonObject.getString("answer");
 
-        if (checkRecordExistsInDB(eventId, currentUserId)) {
-            eventRepository.updateParticipationInfo(currentUserId, eventId, answerString);
-        } else {
+        if (eventRepository.findRecordCount(eventId, currentUserId) == 0) {
             eventRepository.insertParticipationInfo(currentUserId, eventId, answerString);
-            System.out.println("Inserted");
+        } else {
+            eventRepository.updateParticipationInfo(currentUserId, eventId, answerString);
         }
-    }
-
-    public boolean checkRecordExistsInDB(int eventId, int userId){
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            Connection conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/eventsplanner",
-                    databaseUsername,
-                    databasePassword);
-
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(
-                    "SELECT count(*) AS total FROM event_user WHERE event_id = " + eventId + " AND user_id = " + userId);
-            
-            if (rs.next()) {
-                if (rs.getInt("total") == 0) {
-                    conn.close();
-                    return false;
-                } else {
-                    conn.close();
-                    return true;
-                }
-            }
-        }
-        catch(Exception e){
-            System.out.println(e);
-        }
-        return false;
     }
 
     @PostMapping("/events")
