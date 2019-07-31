@@ -71,7 +71,7 @@ public class EventController {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(
                     "SELECT count(*) AS total FROM event_user WHERE event_id = " + eventId + " AND user_id = " + userId);
-
+            
             if (rs.next()) {
                 if (rs.getInt("total") == 0) {
                     conn.close();
