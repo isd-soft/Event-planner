@@ -23,6 +23,7 @@ public class UserDAO {
 	@Column
 	private String username;
 
+
 	@Column
 	@JsonIgnore
 	private String password;

@@ -51,7 +51,7 @@ public class EventController {
         }
     }
 
-    @GetMapping("/events/{eventId}/participants")
+    @PostMapping("/events/{eventId}/participants")
     public List<UserDAO> getParticipationInfo(@PathVariable Integer eventId, @RequestBody String answer ) throws JSONException {
 
         final JSONObject jsonObject = new JSONObject(answer);
