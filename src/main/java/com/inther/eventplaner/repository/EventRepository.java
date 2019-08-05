@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @SuppressWarnings("ALL")
 @Repository
@@ -30,6 +31,14 @@ public interface EventRepository extends JpaRepository<Event, Integer> {
     @Transactional
     @Query(value = "select count(user_id) from event_user where event_id = :eventId and user_id = :userId", nativeQuery = true)
     public int findRecordCount(@Param("eventId") Integer eventId, @Param("userId") Integer userId);
+
+    @Transactional
+    @Query(value = "select email from users join event_user on id = event_user.user_id where event_id = :eventId", nativeQuery = true)
+    public List<String> getAllParticipantsEmailsOfEvent(@Param("eventId") Integer eventId);
+
+    @Transactional
+    @Query(value = "select user_id from events where id = :eventId", nativeQuery = true)
+    public int getOrganizerIdOfEvent(@Param("eventId") Integer eventId);
 
 
 }

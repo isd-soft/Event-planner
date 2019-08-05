@@ -5,10 +5,12 @@ import com.inther.eventplaner.exception.ResourceNotFoundException;
 import com.inther.eventplaner.model.UserDAO;
 import com.inther.eventplaner.repository.EventRepository;
 import com.inther.eventplaner.repository.UserRepository;
+import com.inther.eventplaner.service.EmailSenderService;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,6 +24,9 @@ import java.util.Optional;
 public class EventController {
 
     @Autowired
+    private EmailSenderService emailSenderService;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -29,7 +34,7 @@ public class EventController {
 
     @GetMapping("/events")
     public Page<Event> getAllEvents(Pageable pageable) {
-        return eventRepository.findAll(pageable);
+        return eventRepository.findAll(PageRequest.of(0, (int) eventRepository.count()));
     }
 
     @GetMapping("/events/{eventId}")
@@ -49,6 +54,14 @@ public class EventController {
         } else {
             eventRepository.updateParticipationInfo(currentUserId, eventId, answerString);
         }
+
+        String organizerEmail = userRepository.findById(eventRepository.getOrganizerIdOfEvent(eventId)).get().getEmail();
+
+        // send info email to organizer about user participation
+        emailSenderService.sendEmail(organizerEmail,
+                "New participation info for event #" + eventId,
+                getEventDetailsForEmail(eventId) +
+                        getParticipationInfoForEmail(currentUserId, answerString));
     }
 
     @PostMapping("/events/{eventId}/participants")
@@ -65,7 +78,7 @@ public class EventController {
     public Event createEvent(@Valid @RequestBody Event event) {
 
         // additionally here we set an userId for created event =>
-        // value of userId is id of authenticated user, so this way we can find out who created this event
+        // value of userId is id of authenticated user, so later we can find out who is the organizer of this event
         int currentUserId = userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getId();
         event.setUserId(currentUserId);
 
@@ -74,7 +87,32 @@ public class EventController {
         // add record in conjunction table
         eventRepository.insertParticipationInfo(currentUserId, newEvent.getId(), "coming");
 
+        // send email notification to all registered users
+        for (String userEmail: userRepository.getAllUserEmails()
+        ) {
+            emailSenderService.sendEmail(userEmail.trim(),
+                    "New Event",
+                    getEventDetailsForEmail(newEvent.getId()));
+        }
+
         return newEvent;
+    }
+
+    private String getEventDetailsForEmail(int eventId) {
+
+        Event event = eventRepository.findById(eventId);
+        StringBuilder emailText = new StringBuilder("Event Details\n");
+        emailText.append("Event Title: " + event.getTitle());
+        emailText.append("\nStart Date: " + event.getStartdate().toGMTString());
+        emailText.append("\nDescription: " + event.getDescription());
+
+        return emailText.toString();
+    }
+
+    private String getParticipationInfoForEmail (int userId, String answer) {
+        return "\nUser: " + userRepository.findById(userId).get().getFirstname() + " "
+                + userRepository.findById(userId).get().getLastname()
+        + "\nParticipation: " + answer;
     }
 
     @PutMapping("/events/{eventId}")
@@ -88,14 +126,33 @@ public class EventController {
             event.setPrice(eventRequest.getPrice());
             event.setLocation(eventRequest.getLocation());
             event.setUserId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getId());
-            return eventRepository.save(event);
+            eventRepository.save(event);
+
+            // send email to participants of event with notification event details modified
+            for (String userEmail: eventRepository.getAllParticipantsEmailsOfEvent(eventId)
+            ) {
+                emailSenderService.sendEmail(userEmail.trim(),
+                        "Event #" + eventId + " modified",
+                        getEventDetailsForEmail(eventId));
+            }
+
+            return event;
         }).orElseThrow(() -> new ResourceNotFoundException("EventId " + eventId + " not found"));
     }
 
     @DeleteMapping("/events/{eventId}")
     public ResponseEntity<?> deleteEvent(@PathVariable Integer eventId) {
         return eventRepository.findById(eventId).map(event -> {
+            List<String> eventParticipants = eventRepository.getAllParticipantsEmailsOfEvent(eventId);
+            String eventDetails = getEventDetailsForEmail(eventId);
             eventRepository.delete(event);
+            // send email to participants with notification event deleted
+            for (String userEmail: eventParticipants
+            ) {
+                emailSenderService.sendEmail(userEmail.trim(),
+                        "Event #" + eventId + " deleted",
+                        eventDetails);
+            }
             return ResponseEntity.ok().build();
         }).orElseThrow(() -> new ResourceNotFoundException("EventId " + eventId + " not found"));
     }

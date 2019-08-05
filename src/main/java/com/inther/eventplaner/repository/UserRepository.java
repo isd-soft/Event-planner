@@ -17,4 +17,8 @@ public interface UserRepository extends JpaRepository<UserDAO, Integer> {
     @Transactional
     @Query(value = "select * from users join event_user on users.id = event_user.user_id where event_id = :eventId and answer = :answer", nativeQuery = true)
     List<UserDAO> getAllParticipantsInfoForEvent(@Param("eventId") Integer eventId, @Param("answer") String answer);
+
+    @Transactional
+    @Query(value = "select email from users", nativeQuery = true)
+    List<String> getAllUserEmails();
 }
